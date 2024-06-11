@@ -32,20 +32,20 @@ public class Player
         GemCount = 0;
     }
 
-    public void Move(string  direction)
+    public void Move(char  direction)
     {
         switch (direction)
         {
-            case "UP":
+            case 'U':
                 Position.X = Position.X-1;
                 break;
-            case "DOWN":
+            case 'D':
                 Position.X = Position.X+1;
                 break;
-            case "LEFT":
+            case 'L':
                 Position.Y = Position.Y-1;
                 break;
-            case "RIGHT":
+            case 'R':
                 Position.Y= Position.Y +1;
                 break;
         }
@@ -99,7 +99,40 @@ public class Board
             Console.WriteLine();
         }
     }
+    //GAME logic for valid movements
+    public bool IsValidMove(Player player, char direction)
+    {
+        int newPosX = player.Position.X;
+        int newPosY = player.Position.Y;
+
+        switch (direction)
+        {
+            case 'U':
+                newPosX= newPosX-1;
+                break;
+            case 'D':
+                newPosX= newPosX+1;
+                break;
+            case 'L':
+                newPosY= newPosY-1;
+                break;
+            case 'R':
+                newPosY= newPosY+1;
+                break;
+        }
+
+        if (newPosX < 0 || newPosX >= Size || newPosY < 0 || newPosY >= Size)
+            return false;
+
+        if (Grid[newPosX, newPosY].Occupant == "O")
+            return false;
+
+        return true;
+    }
+
 }
+
+
 public class GameHunter
 {
     public static void Main(string[] args)
