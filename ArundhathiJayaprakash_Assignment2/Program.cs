@@ -7,6 +7,50 @@
         Occupant = occupant;
     }
 }
+public class Position
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public Position(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+public class Player
+{
+    public string Name { get; }
+    public Position Position { get; set; }
+    public int GemCount { get; set; }
+
+    public Player(string name, Position position)
+    {
+        Name = name;
+        Position = position;
+        GemCount = 0;
+    }
+
+    public void Move(string  direction)
+    {
+        switch (direction)
+        {
+            case "UP":
+                Position.X = Position.X-1;
+                break;
+            case "DOWN":
+                Position.X = Position.X+1;
+                break;
+            case "LEFT":
+                Position.Y = Position.Y-1;
+                break;
+            case "RIGHT":
+                Position.Y= Position.Y +1;
+                break;
+        }
+    }
+}
 
 public class Board
 {
