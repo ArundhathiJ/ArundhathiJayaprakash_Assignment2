@@ -122,10 +122,22 @@ public class Board
         }
 
         if (newPosX < 0 || newPosX >= Size || newPosY < 0 || newPosY >= Size)
+        {
+            Console.WriteLine("Invalid move  PLEASE TRY AGAIN");
             return false;
+        }
+           
+        
+       
 
         if (Grid[newPosX, newPosY].Occupant == "O")
+        {
+            Console.WriteLine("Its a obsacle TRY AGAIN");
             return false;
+        }
+
+            
+         
 
         return true;
     }
@@ -139,7 +151,7 @@ public class Board
             Grid[pos.X, pos.Y].Occupant = player.Name;
         }
     }
-
+    //updating position after each movement
     public void UpdatePlayerPosition(Player player, Position newPosition)
     {
         Grid[player.Position.X, player.Position.Y].Occupant = "-";
@@ -170,14 +182,15 @@ public class Game
         while (!IsGameOver())
         {
             Console.Clear();
-            Board.Display();
-            Console.WriteLine($"{Player1.Name} Gems: {Player1.GemCount}, {Player2.Name} Gems: {Player2.GemCount}");
-            Console.WriteLine($"{currentPlayer.Name}'s turn. Moves left: {15 - totalTurns / 2}");
+            Board.DisplayGame();
+            Console.WriteLine($"{Player1.Name} Colleced Gems: {Player1.GemCount}");
+                 Console.WriteLine($" {Player2.Name} Collected  Gems: {Player2.GemCount}");
+            Console.WriteLine($"The remaining moves {currentPlayer.Name}'s . Moves left: {15 - totalTurns / 2}");
 
             char move;
             do
             {
-                Console.Write($"{currentPlayer.Name}, enter move (U/D/L/R): ");
+                Console.WriteLine(currentPlayer.Name, "enter move (U/D/L/R): ");
                 move = Console.ReadLine().ToUpper()[0];
             } while (!Board.IsValidMove(currentPlayer, move));
 
@@ -194,7 +207,7 @@ public class Game
 
         AnnounceWinner();
     }
-
+    //Changing turns after each move
     private void SwitchTurn()
     {
         currentPlayer = (currentPlayer == Player1) ? Player2 : Player1;
@@ -204,21 +217,21 @@ public class Game
     {
         return totalTurns >= 30;
     }
-
+    //announce winner
     private void AnnounceWinner()
     {
         Console.Clear();
-        Board.Display();
+        Board.DisplayGame();
         Console.WriteLine("Game Over!");
-        Console.WriteLine($"{Player1.Name} collected {Player1.GemCount} gems.");
-        Console.WriteLine($"{Player2.Name} collected {Player2.GemCount} gems.");
+        Console.WriteLine(Player1.Name + "collected Gems ="+Player1.GemCount);
+        Console.WriteLine(Player2.Name+" collected Gems ="+Player2.GemCount);
         if (Player1.GemCount > Player2.GemCount)
         {
-            Console.WriteLine($"{Player1.Name} wins!");
+            Console.WriteLine(Player1.Name+"wins!");
         }
         else if (Player2.GemCount > Player1.GemCount)
         {
-            Console.WriteLine($"{Player2.Name} wins!");
+            Console.WriteLine(Player2.Name + "wins!");
         }
         else
         {
@@ -226,15 +239,14 @@ public class Game
         }
     }
 }
-
-
-
-
 public class GameHunter
 {
     public static void Main(string[] args)
     {
-        Board board = new Board();
-        board.DisplayGame();
+        Board bord = new Board();
+        bord.DisplayGame();
+        Game game = new Game();
+        game.Start();
+
     }
 }
