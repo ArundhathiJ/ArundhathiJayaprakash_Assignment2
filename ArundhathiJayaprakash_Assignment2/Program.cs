@@ -129,8 +129,105 @@ public class Board
 
         return true;
     }
+    //If players collect gems, the gems count will increase by one
+    public void CollectGem(Player player)
+    {
+        Position pos = player.Position;
+        if (Grid[pos.X, pos.Y].Occupant == "G")
+        {
+            player.GemCount++;
+            Grid[pos.X, pos.Y].Occupant = player.Name;
+        }
+    }
 
+    public void UpdatePlayerPosition(Player player, Position newPosition)
+    {
+        Grid[player.Position.X, player.Position.Y].Occupant = "-";
+        player.Position = newPosition;
+        Grid[newPosition.X, newPosition.Y].Occupant = player.Name;
+    }
 }
+
+public class Game
+{
+    public Board Board { get; }
+    public Player Player1 { get; }
+    public Player Player2 { get; }
+    private Player currentPlayer;
+    private int totalTurns;
+
+    public Game()
+    {
+        Board = new Board();
+        Player1 = new Player("P1", new Position(0, 0));
+        Player2 = new Player("P2", new Position(Board.Grid.GetLength(0) - 1, Board.Grid.GetLength(1) - 1));
+        currentPlayer = Player1;
+        totalTurns = 0;
+    }
+
+    public void Start()
+    {
+        while (!IsGameOver())
+        {
+            Console.Clear();
+            Board.Display();
+            Console.WriteLine($"{Player1.Name} Gems: {Player1.GemCount}, {Player2.Name} Gems: {Player2.GemCount}");
+            Console.WriteLine($"{currentPlayer.Name}'s turn. Moves left: {15 - totalTurns / 2}");
+
+            char move;
+            do
+            {
+                Console.Write($"{currentPlayer.Name}, enter move (U/D/L/R): ");
+                move = Console.ReadLine().ToUpper()[0];
+            } while (!Board.IsValidMove(currentPlayer, move));
+
+            // Update player's position
+            Position oldPosition = new Position(currentPlayer.Position.X, currentPlayer.Position.Y);
+            currentPlayer.Move(move);
+            Board.CollectGem(currentPlayer);
+            Board.UpdatePlayerPosition(currentPlayer, currentPlayer.Position);
+            Board.Grid[oldPosition.X, oldPosition.Y].Occupant = "-";
+
+            totalTurns++;
+            SwitchTurn();
+        }
+
+        AnnounceWinner();
+    }
+
+    private void SwitchTurn()
+    {
+        currentPlayer = (currentPlayer == Player1) ? Player2 : Player1;
+    }
+
+    private bool IsGameOver()
+    {
+        return totalTurns >= 30;
+    }
+
+    private void AnnounceWinner()
+    {
+        Console.Clear();
+        Board.Display();
+        Console.WriteLine("Game Over!");
+        Console.WriteLine($"{Player1.Name} collected {Player1.GemCount} gems.");
+        Console.WriteLine($"{Player2.Name} collected {Player2.GemCount} gems.");
+        if (Player1.GemCount > Player2.GemCount)
+        {
+            Console.WriteLine($"{Player1.Name} wins!");
+        }
+        else if (Player2.GemCount > Player1.GemCount)
+        {
+            Console.WriteLine($"{Player2.Name} wins!");
+        }
+        else
+        {
+            Console.WriteLine("It's a tie!");
+        }
+    }
+}
+
+
 
 
 public class GameHunter
