@@ -173,8 +173,8 @@ public class Game
             char move;
             do
             {
-                Console.WriteLine(currentPlayer.Name, "enter move (U/D/L/R): ");
-                 move = Console.ReadLine().ToUpper()[0];
+                Console.WriteLine($"{currentPlayer.Name}'s turn, enter move (U/D/L/R): ");
+                move = Console.ReadLine().ToUpper()[0];
             } while (!Board.IsValidMove(currentPlayer, move));
 
             // Update player's position
