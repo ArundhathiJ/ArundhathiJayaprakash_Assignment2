@@ -11,32 +11,29 @@ public class Position
 {
     public int X { get; set; }
     public int Y { get; set; }
-
     public Position(int x, int y)
     {
         X = x;
         Y = y;
     }
 }
-
 public class Player
 {
     public string Name { get; }
     public Position Position { get; set; }
     public int GemCount { get; set; }
-
     public Player(string name, Position position)
     {
         Name = name;
         Position = position;
         GemCount = 0;
     }
-
     public void Move(char  direction)
     {
         switch (direction)
         {
             case 'U':
+
                 Position.X = Position.X-1;
                 break;
             case 'D':
@@ -51,12 +48,10 @@ public class Player
         }
     }
 }
-
 public class Board
 {
     int Size = 6;
     public Cell[,] Grid { get; }
-
     public Board()
     {
         Grid = new Cell[6, 6];
@@ -87,7 +82,6 @@ public class Board
             }
         }
     }
-
     public void DisplayGame()
     {
         for (int i = 0; i < Size; i++)
@@ -126,19 +120,11 @@ public class Board
             Console.WriteLine("Invalid move  PLEASE TRY AGAIN");
             return false;
         }
-           
-        
-       
-
-        if (Grid[newPosX, newPosY].Occupant == "O")
+           if (Grid[newPosX, newPosY].Occupant == "O")
         {
             Console.WriteLine("Its a obsacle TRY AGAIN");
             return false;
         }
-
-            
-         
-
         return true;
     }
     //If players collect gems, the gems count will increase by one
@@ -159,7 +145,6 @@ public class Board
         Grid[newPosition.X, newPosition.Y].Occupant = player.Name;
     }
 }
-
 public class Game
 {
     public Board Board { get; }
@@ -167,7 +152,6 @@ public class Game
     public Player Player2 { get; }
     private Player currentPlayer;
     private int totalTurns;
-
     public Game()
     {
         Board = new Board();
@@ -176,7 +160,6 @@ public class Game
         currentPlayer = Player1;
         totalTurns = 0;
     }
-
     public void Start()
     {
         while (!IsGameOver())
@@ -191,7 +174,7 @@ public class Game
             do
             {
                 Console.WriteLine(currentPlayer.Name, "enter move (U/D/L/R): ");
-                move = Console.ReadLine().ToUpper()[0];
+                 move = Console.ReadLine().ToUpper()[0];
             } while (!Board.IsValidMove(currentPlayer, move));
 
             // Update player's position
@@ -227,11 +210,11 @@ public class Game
         Console.WriteLine(Player2.Name+" collected Gems ="+Player2.GemCount);
         if (Player1.GemCount > Player2.GemCount)
         {
-            Console.WriteLine(Player1.Name+"wins!");
+            Console.WriteLine(Player1.Name+ "wins!");
         }
         else if (Player2.GemCount > Player1.GemCount)
         {
-            Console.WriteLine(Player2.Name + "wins!");
+            Console.WriteLine(Player2.Name +  "wins!");
         }
         else
         {
@@ -240,13 +223,11 @@ public class Game
     }
 }
 public class GameHunter
-{
-    public static void Main(string[] args)
+{   public static void Main(string[] args)
     {
         Board bord = new Board();
         bord.DisplayGame();
         Game game = new Game();
         game.Start();
-
     }
 }
